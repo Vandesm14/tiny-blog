@@ -13,7 +13,9 @@ $(document).ready(function () {
 		});
 
 	$(document).on('click', '.post', function () {
+		$('.active').removeClass('active');
 		renderEntry($(this).index());
+		$(this).addClass('active');
 	});
 });
 
@@ -22,12 +24,12 @@ function renderEntry(index) {
 }
 
 function renderPage(page) {
+	console.log(`Page ${page} requested`);
 	fetch(`/page/${page}`)
 		.then(res => res.json())
 		.then(json => {
+			console.log(`Page ${page} received (${json.length} posts)`);
 			posts.push(...json);
-			$('#list').append(ejs.render(template.list, {
-				posts
-			}));
+			$('#list').append(ejs.render(template.list, {posts}));
 		});
 }

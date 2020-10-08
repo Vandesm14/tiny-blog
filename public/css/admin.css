@@ -1,8 +1,12 @@
-.title:hover, .tags:hover, .content:hover {
+.title:hover,
+.tags:hover,
+.content:hover {
 	background-color: var(--ui-background);
 	cursor: text;
 	border-radius: 4px;
 }
-.title:focus, .tags:focus, .content:focus {
+.title:focus,
+.tags:focus,
+.content:focus {
 	outline: 1px solid var(--text-blur);
 }

@@ -1,184 +1,185 @@
 html,
 body {
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
 }
 
 body {
-  display: flex;
-  flex-direction: row;
-  background-color: var(--ui-background);
-  color: var(--text-blur);
-  font-family: Calibri, sans-serif;
+	display: flex;
+	flex-direction: row;
+	background-color: var(--ui-background);
+	color: var(--text-blur);
+	font-family: Calibri, sans-serif;
 }
 
 div,
 h1,
 p {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 a,
 a:visited {
-  color: #0000dd;
+	color: #0000dd;
 }
 
 /* ----------Global---------- */
 :root {
-  --tag-blue: #458bb1;
-  --tag-green: #45b150;
-  --text-active: #e1e1e1;
-  --text-blur: #a1a1a1;
-  --ui-active: #353535;
-  --ui-background: #212121;
-  --ui-blur: #292929;
+	--tag-blue: #458bb1;
+	--tag-green: #45b150;
+	--text-active: #e1e1e1;
+	--text-blur: #a1a1a1;
+	--ui-active: #353535;
+	--ui-background: #212121;
+	--ui-blur: #292929;
 }
 
 /* ----------App---------- */
 .list,
 .viewer {
-  overflow-y: auto;
-  width: 50%;
+	overflow-y: auto;
+	width: 50%;
 }
 
 .list,
 .post,
 .viewer {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .viewer,
 .post {
-  margin: 10px;
-  padding: 10px;
-  border-radius: 6px;
-  background-color: var(--ui-blur);
+	margin: 10px;
+	padding: 10px;
+	border-radius: 6px;
+	background-color: var(--ui-blur);
 }
 
 /* ----------List---------- */
 .list {
-  padding: 4px 0;
+	padding: 4px 0;
 }
 
 .post {
-  margin: 6px;
-  cursor: pointer;
+	margin: 6px;
+	cursor: pointer;
 }
-.post:hover {
-  background-color: var(--ui-active);
+.post:hover,
+.post.active {
+	background-color: var(--ui-active);
 }
 
 .info,
 .tags {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  font-size: 20px;
+	display: flex;
+	flex-direction: row;
+	font-size: 20px;
 }
 
 .info {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+	justify-content: space-between;
 }
 
 .title {
-  color: var(--text-active);
-  font-size: 28px;
+	color: var(--text-active);
+	font-size: 28px;
 }
 
 .bottom {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .bottom > img {
-  width: 20px;
+	width: 20px;
 }
 
 .post .tags {
 	flex: 1;
+	justify-content: flex-start;
 }
 
 .tags > .tag {
-  color: var(--tag-blue);
-  text-decoration: none;
+	color: var(--tag-blue);
+	text-decoration: none;
+	width: max-content;
+	margin: 0 4px;
 }
 .tags > .tag:before {
-  content: '#';
+	content: '#';
 }
 .tags > .tag:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 .icons {
-  display: flex;
-  flex-direction: row;
+	display: flex;
+	flex-direction: row;
 }
 
 .icons > img {
-  padding: 0 4px;
-  width: 18px;
-  border-radius: 4px;
+	padding: 0 4px;
+	width: 18px;
+	border-radius: 4px;
 }
 
 .icons > img:hover {
-  background-color: var(--ui-background);
+	background-color: var(--ui-background);
 }
 
 /* ----------Viewer---------- */
 .viewer {
-  padding: 16px;
+	padding: 16px;
 }
 
 .viewer > * {
-  margin: 6px 0;
+	margin: 6px 0;
 }
 
 .viewer > #no-entry {
-  margin: auto;
-  width: max-content;
-  height: max-content;
+	margin: auto;
+	width: max-content;
+	height: max-content;
 }
 
 .viewer > #no-entry > h1 {
-  font-size: 42px;
+	font-size: 42px;
 }
 
 .viewer > #no-entry > p {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  font-size: 30px;;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	font-size: 30px;;
 }
 
 .viewer > #no-entry > p > img {
-  margin: 0 4px;
-  width: 30px;
-  height: 30px;
+	margin: 0 4px;
+	width: 30px;
+	height: 30px;
 }
 
 .viewer > .info,
 .viewer > .tags {
-  font-size: 22px;
+	font-size: 22px;
 }
 
 .viewer > .info {
-  margin-top: 0;
+	margin-top: 0;
 }
 
 .viewer > .title {
-  font-size: 36px;
+	font-size: 36px;
 }
 
 .viewer > .content {
-  margin-top: 20px;
-  text-align: justify;
+	margin-top: 20px;
+	text-align: justify;
 	font-size: 22px;
 	word-wrap: break-word;
 }

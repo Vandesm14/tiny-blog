@@ -1,44 +1,44 @@
 form {
-/* background-color: var(--ui-blur); */
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  padding: 16px;
-  width: max-content;
-  height: max-content;
-  border-radius: 6px;
+	/* background-color: var(--ui-blur); */
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	padding: 16px;
+	width: max-content;
+	height: max-content;
+	border-radius: 6px;
 }
 
 form > * {
-  margin: 18px 0;
-  color: var(--text-active);
+	margin: 18px 0;
+	color: var(--text-active);
 }
 
 form > h1 {
-  font-size: 40px !important;
+	font-size: 40px !important;
 }
 
 form > input {
-  border-radius: 6px;
-  font-size: 20px;
+	border-radius: 6px;
+	font-size: 20px;
 }
 
 form > input[type='password'] {
-  padding: 14px;
-  border: none;
-  background-color: var(--ui-blur);
+	padding: 14px;
+	border: none;
+	background-color: var(--ui-blur);
 }
 form > input[type='password']:focus {
-  background-color: var(--ui-active);
+	background-color: var(--ui-active);
 }
 
 form > input[type='submit'] {
-  padding: 10px;
-  width: max-content;
-  border: none;
-  background-color: var(--ui-blur);
-  cursor: pointer;
+	padding: 10px;
+	width: max-content;
+	border: none;
+	background-color: var(--ui-blur);
+	cursor: pointer;
 }
 form > input[type='submit']:hover {
-  background-color: var(--ui-active);
+	background-color: var(--ui-active);
 }
