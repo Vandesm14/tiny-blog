@@ -101,6 +101,10 @@ a:visited {
   width: 20px;
 }
 
+.post .tags {
+	flex: 1;
+}
+
 .tags > .tag {
   color: var(--tag-blue);
   text-decoration: none;
@@ -175,5 +179,6 @@ a:visited {
 .viewer > .content {
   margin-top: 20px;
   text-align: justify;
-  font-size: 22px;
+	font-size: 22px;
+	word-wrap: break-word;
 }

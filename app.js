@@ -20,9 +20,13 @@ app.get('/', (req, res) => {
 	res.render(__dirname + '/views/index.ejs', {admin, posts});
 });
 
-app.get('/list.ejs', (req, res) => {
+app.get('/templates', (req, res) => {
 	let admin = req.cookies.admin === process.env.KEY;
-	res.sendFile(__dirname + `/views/partials/list${admin ? '-admin' : ''}.ejs`);
+	let templates = {
+		list: fs.readFileSync(__dirname + `/views/partials/list${admin ? '-admin' : ''}.ejs`).toString(),
+		viewer: fs.readFileSync(__dirname + `/views/partials/viewer${admin ? '-admin' : ''}.ejs`).toString()
+	}
+	res.json(templates);
 });
 
 app.get('/page/:page', (req, res) => {

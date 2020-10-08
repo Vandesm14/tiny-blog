@@ -1,7 +1,6 @@
+console.log('Loaded admin.js');
 
 $(document).ready(function () {
-	console.log('Loaded admin.js');
-
 	$(document).on('click', '.post .admin-delete', function () {
 		let index = $(this).closest('.post').index();
 		if (confirm(`Delete post: "${posts[index].title}"?`)) {
@@ -10,8 +9,13 @@ $(document).ready(function () {
 			$(this).text(posts[index].title);
 		}
 	});
-	$(document).on('blur', '.post .title', function () {
-		let index = $(this).closest('.post').index();
+	$(document).on('blur', ' .title', function () {
+		let index = 0;
+		if ($(this).closest('.post').length > 0) {
+			index = $(this).closest('.post').index();
+		} else if ($(this).closest('.viewer').length > 0) {
+			index = $('.list').find('.post.active').index();
+		}
 		let title = $(this).text();
 		if (title === '') {
 			if (confirm(`Delete post: "${posts[index].title}"?`)) {
@@ -23,10 +27,9 @@ $(document).ready(function () {
 			console.log('Updated', posts[index]);
 		}
 	});
-	$(document).on('keydown', '.post .title', function (e) {
+	$(document).on('keydown', '.title', function (e) {
 		if (e.key === 'Enter') {
 			$(this).blur();
 		}
 	});
-
 });
