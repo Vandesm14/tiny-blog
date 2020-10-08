@@ -1,0 +1,21 @@
+<% for (let post of posts) { %>
+<div class="post">
+	<div class="info">
+		<p class="date"><%= post.date %></p>
+		<p class="views"><%= post.views || '' %></p>
+	</div>
+	<p class="title"><%= post.title %></p>
+	<div class="bottom">
+		<div class="tags">
+			<%- post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
+		</div>
+		<% if (admin) { %>
+		<div class="admin">
+			<img src="assets/delete.png" class="admin-delete">
+			<img src="assets/edit.png" class="admin-edit">
+		</div>
+		<% } %>
+		<%- post.content && '<img src="assets/content.png">' %>
+	</div>
+</div>
+<% } %>

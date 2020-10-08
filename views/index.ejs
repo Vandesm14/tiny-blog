@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Vandesm14 | Blog</title>
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+	<link rel="icon" href="fav.png" />
+
+	<!-- Primary Meta Tags -->
+	<meta name="title" content="Vandesm14">
+	<meta name="description" content="Shane Vandegrift, a friendly fullstack developer">
+	<meta name="theme-color" content="#FF0000">
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://vandesm14.ml/">
+	<meta property="og:title" content="Vandesm14">
+	<meta property="og:description" content="Shane Vandegrift, a friendly fullstack developer">
+	<meta property="og:image" content="fav.png">
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image">
+	<meta property="twitter:url" content="https://vandesm14.ml/">
+	<meta property="twitter:title" content="Vandesm14">
+	<meta property="twitter:description" content="Shane Vandegrift, a friendly fullstack developer">
+	<meta property="twitter:image" content="fav.png">
+</head>
+
+<body>
+	<div class="list" id="list"></div>
+	<div class="viewer" id="viewer">
+		<div id="no-entry">
+			<h1>No entry selected</h1>
+			<p>
+				Select an entry with a <img src="assets/content.png"> icon to view it's content
+			</p>
+		</div>
+	</div>
+	<script src="js/zepto.min.js"></script>
+	<script src="js/script.js"></script>
+	<% if (admin) { %>
+	<script src="js/admin.js"></script>
+	<% } %>
+</body>
+
+</html>
