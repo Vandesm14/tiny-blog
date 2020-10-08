@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const ejs = require('ejs');
 const fs = require('fs');
+require('dotenv').config();
 
 const app = express();
 
@@ -15,19 +16,28 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-	let admin = req.query.admin;
+	let admin = req.cookies.admin === process.env.KEY;
 	res.render(__dirname + '/views/index.ejs', {admin, posts});
+});
+
+app.get('/list.ejs', (req, res) => {
+	let admin = req.cookies.admin === process.env.KEY;
+	res.sendFile(__dirname + `/views/partials/list${admin ? '-admin' : ''}.ejs`);
 });
 
 app.get('/page/:page', (req, res) => {
 	let page = +req.params.page - 1;
-	let admin = req.query.admin;
-	ejs.renderFile(__dirname + '/views/list.ejs', {posts: posts.slice(page*10, page*10+10), admin}, function(err, html) {
-		res.json({
-			html,
-			json: posts.slice(page*10, page*10+10)
-		});
-	});
+	res.json(posts.slice(page*10, page*10+10));
+});
+
+app.get('/login', (req, res) => {
+	res.render(__dirname + '/views/login.ejs');
+});
+
+app.post('/login', (req, res) => {
+	let key = req.body.key;
+	res.cookie('admin', key);
+	res.redirect('/');
 });
 
 app.listen(3000, () => console.log('server started on port: ' + 3000));

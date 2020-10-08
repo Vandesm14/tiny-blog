@@ -5,8 +5,11 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<title>Vandesm14 | Blog</title>
-	<link href="css/style.css" rel="stylesheet" type="text/css" />
-	<link rel="icon" href="fav.png" />
+	<link href="/css/style.css" rel="stylesheet" type="text/css" />
+	<% if (admin) { %>
+	<link href="/css/admin.css" rel="stylesheet" type="text/css" />
+	<% } %>
+	<link rel="icon" href="/fav.png" />
 
 	<!-- Primary Meta Tags -->
 	<meta name="title" content="Vandesm14">
@@ -15,17 +18,17 @@
 
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://vandesm14.ml/">
+	<meta property="og:url" content="https://blog.vandesm14.ml/">
 	<meta property="og:title" content="Vandesm14">
 	<meta property="og:description" content="Shane Vandegrift, a friendly fullstack developer">
-	<meta property="og:image" content="fav.png">
+	<meta property="og:image" content="/fav.png">
 
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image">
-	<meta property="twitter:url" content="https://vandesm14.ml/">
+	<meta property="twitter:url" content="https://blog.vandesm14.ml/">
 	<meta property="twitter:title" content="Vandesm14">
 	<meta property="twitter:description" content="Shane Vandegrift, a friendly fullstack developer">
-	<meta property="twitter:image" content="fav.png">
+	<meta property="twitter:image" content="/fav.png">
 </head>
 
 <body>
@@ -34,14 +37,15 @@
 		<div id="no-entry">
 			<h1>No entry selected</h1>
 			<p>
-				Select an entry with a <img src="assets/content.png"> icon to view it's content
+				Select an entry with a <img src="/assets/content.png"> icon to view it's content
 			</p>
 		</div>
 	</div>
-	<script src="js/zepto.min.js"></script>
-	<script src="js/script.js"></script>
+	<script src="/js/zepto.min.js"></script>
+	<script src="/js/ejs.min.js"></script>
+	<script src="/js/script.js"></script>
 	<% if (admin) { %>
-	<script src="js/admin.js"></script>
+	<script src="/js/admin.js"></script>
 	<% } %>
 </body>
 
