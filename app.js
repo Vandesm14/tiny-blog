@@ -1,15 +1,37 @@
+const fs = require('fs');
+const ejs = require('ejs');
 const express = require('express');
+const firebase = require('firebase');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const Client = require('@replit/database');
-const ejs = require('ejs');
-const fs = require('fs');
 require('dotenv').config();
 
-const app = express();
-const db = new Client();
+const config = {
+	apiKey: process.env.APIKEY,
+	authDomain: `${process.env.PROJECTID}.firebaseapp.com`,
+	databaseURL: `https://${process.env.DBNAME}.firebaseio.com`,
+	storageBucket: `${process.env.BUCKET}.appspot.com`
+};
+firebase.initializeApp(config);
 
-let posts = JSON.parse(fs.readFileSync('posts.json').toString());
+const app = express();
+const db = firebase.database();
+
+let posts = [];
+let started = false;
+db.ref('posts').limitToLast(30).orderByChild('date').on('value', (data) => {
+	posts = data.val() ? Object.values(data.val()) : [];
+	posts = posts.reverse();
+	if (!started) start(0);
+	fs.writeFileSync('db.json', JSON.stringify(data.toJSON()));
+});
+
+function start() {
+	app.listen(3000, () => {
+		console.log('server started on port: ' + 3000);
+		started = true;
+	});
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,27 +40,30 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-	let admin = req.cookies.admin === process.env.KEY;
+	let admin = req.cookies.admin === process.env.ADMIN;
 	res.render(__dirname + '/views/index.ejs', {admin, posts});
 });
 
 app.get('/templates', (req, res) => {
-	let admin = req.cookies.admin === process.env.KEY;
-	let list, viewer = '';
-	ejs.renderFile(__dirname + `/views/partials/list.ejs`, {admin}, (err, data) => {
-		list = data;
-
-		ejs.renderFile(__dirname + `/views/partials/viewer.ejs`, {admin}, (err, data) => {
-			viewer = data;
-			
-			res.json({list, viewer});
-		});
-	});
+	let admin = req.cookies.admin === process.env.ADMIN;
+	let templates = {
+		list: ejs.render(fs.readFileSync(__dirname + '/views/partials/list.ejs').toString(), {admin}),
+		viewer: ejs.render(fs.readFileSync(__dirname + '/views/partials/viewer.ejs').toString(), {admin}),
+		form: ejs.render(fs.readFileSync(__dirname + '/views/partials/form.ejs').toString(), {admin})
+	};
+	res.json(templates);
 });
 
 app.get('/page/:page', (req, res) => {
+	let admin = req.cookies.admin === process.env.ADMIN;
 	let page = +req.params.page - 1;
-	res.json(posts.slice(page*10, page*10+10));
+	// TODO: Retrieve next 20 posts if  page > 3
+	res.json(posts.filter(el => admin || !el.unlist ).slice(page*10, page*10+10));
+});
+
+app.get('/view', (req, res) => {
+	let id = req.query.id;
+	db.ref('posts').child(Object.keys(post.val())[0]).child(type).set(data);
 });
 
 app.get('/login', (req, res) => {
@@ -51,25 +76,49 @@ app.post('/login', (req, res) => {
 	res.redirect('/');
 });
 
+app.post('/search', (req, res) => {
+	let admin = req.cookies.admin === process.env.ADMIN;
+	let page = +req.params.page - 1;
+	res.json(posts.filter(el => admin || !el.unlist ).slice(page*10, page*10+10));
+});
+
 // Admin Routes
-app.post('/admin/post/:date', (req, res) => {
-	let date = req.params.date;
-	let title = req.body.title;
-	let content = req.body.content;
-	let tags = req.body.tags;
-	let views = 0;
+app.put('/admin/create', (req, res) => {
+	let admin = req.cookies.admin === process.env.ADMIN;
+	let data = req.body;
+	if (!admin) res.status(403).send('Forbidden, not admin');
+	if (!data.date) res.status(400).send('Bad Request, missing date');
+	data.date = new Date(data.date).getTime();
+	console.log('create', data);
+	db.ref('posts').push(data);
+	res.status(200).send('Success');
 });
 
-app.put('/admin/post/:date', (req, res) => {
-	let date = req.params.date;
-	let title = req.body.title;
-	let content = req.body.content;
-	let tags = req.body.tags;
-	let views = 0;
+app.post('/admin/update', (req, res) => {
+	let admin = req.cookies.admin === process.env.ADMIN;
+	if (!admin) res.status(403).send('Forbidden, not admin');
+	let type = req.query.type;
+	let id = req.query.id;
+	let data = req.body.data;
+	console.log('update', type, id, data);
+	db.ref('posts').orderByChild('date').equalTo(+id).once('value', (post) => {
+		db.ref('posts').child(Object.keys(post.val())[0]).child(type).set(data);
+	});
+	res.status(200).send('Success');
 });
 
-app.delete('/admin/post/:date', (req, res) => {
-	let date = req.params.date;
+app.delete('/admin/delete', (req, res) => {
+	let admin = req.cookies.admin === process.env.ADMIN;
+	if (!admin) res.status(403).send('Forbidden, not admin');
+	let id = req.query.id;
+	console.log('delete', id);
+	db.ref('posts').orderByChild('date').equalTo(+id).once('value', (post) => {
+		db.ref('posts').child(Object.keys(post.val())[0]).remove()
+		.then(() => {
+			res.status(200).send('Success');
+		})
+		.catch(() => {
+			res.status(500).send('Server error');
+		});
+	});
 });
-
-app.listen(3000, () => console.log('server started on port: ' + 3000));

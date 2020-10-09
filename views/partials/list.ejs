@@ -1,7 +1,7 @@
 <%% for (let post of posts) { %>
-	<div class="post">
+	<div class="post<%%= post.unlist ? ' unlisted' : '' %>">
 		<div class="info">
-			<p class="date"><%%= post.date %></p>
+			<p class="date"><%%= new Date(post.date).toLocaleString() %></p>
 			<% if (admin) { %>
 			<p class="views"><%%= post.views || '0' %> views</p>
 			<% } %>
@@ -16,7 +16,7 @@
 			<% if (admin) { %>
 				
 			<div class="tags" contenteditable="true" spellcheck="false">
-				<%%- post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
+				<%%- post.tags && post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
 			</div>
 			<div class="icons">
 				<img src="assets/delete.png" class="admin-delete">
@@ -27,7 +27,7 @@
 			<% } else { %>
 	
 			<div class="tags">
-				<%%- post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
+				<%%- post.tags && post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
 			</div>
 			<div class="icons">
 				<%%- post.content && '<img src="assets/content.png">' %>

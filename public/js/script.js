@@ -1,5 +1,6 @@
 let posts = [];
 let template = {
+	item: '',
 	list: '',
 	viewer: ''
 };
@@ -9,12 +10,13 @@ $(document).ready(function () {
 		.then(res => res.json())
 		.then(json => {
 			template = json;
+			template.item = template.list.split('\n').slice(1, template.list.split('\n').length - 1).join('\n');
 			renderPage(1);
 		});
 
 	$(document).on('click', '.post', function () {
 		$('.active').removeClass('active');
-		renderEntry($(this).index());
+		renderEntry($(this).index() - 1);
 		$(this).addClass('active');
 	});
 });

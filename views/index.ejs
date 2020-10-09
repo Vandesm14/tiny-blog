@@ -13,26 +13,31 @@
 
 	<!-- Primary Meta Tags -->
 	<meta name="title" content="Vandesm14">
-	<meta name="description" content="Shane Vandegrift, a friendly fullstack developer">
+	<meta name="description" content="The blog of Shane Vandegrift">
 	<meta name="theme-color" content="#FF0000">
 
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://blog.vandesm14.ml/">
 	<meta property="og:title" content="Vandesm14">
-	<meta property="og:description" content="Shane Vandegrift, a friendly fullstack developer">
+	<meta property="og:description" content="The blog of Shane Vandegrift">
 	<meta property="og:image" content="/fav.png">
 
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image">
 	<meta property="twitter:url" content="https://blog.vandesm14.ml/">
 	<meta property="twitter:title" content="Vandesm14">
-	<meta property="twitter:description" content="Shane Vandegrift, a friendly fullstack developer">
+	<meta property="twitter:description" content="The blog of Shane Vandegrift">
 	<meta property="twitter:image" content="/fav.png">
 </head>
 
 <body>
-	<div class="list" id="list"></div>
+	<div class="list" id="list">
+		<div class="search-box">
+			<input type="text" class="search" id="search">
+			<img src="/assets/search.png" class="search-icon">
+		</div>
+	</div>
 	<div class="viewer" id="viewer">
 		<div id="no-entry">
 			<h1>No entry selected</h1>
@@ -41,6 +46,9 @@
 			</p>
 		</div>
 	</div>
+	<% if (admin) { %>
+	<img src="/assets/add.png" id="admin-add">
+	<% } %>
 	<script src="/js/zepto.min.js"></script>
 	<script src="/js/ejs.min.js"></script>
 	<script src="/js/script.js"></script>

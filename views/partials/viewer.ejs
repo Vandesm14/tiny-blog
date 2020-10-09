@@ -1,5 +1,5 @@
 <div class="info">
-	<p class="date"><%%= post.date %></p>
+	<p class="date"><%%= new Date(post.date).toLocaleString() %></p>
 	<% if (admin) { %>
 	<p class="views"><%%= post.views || '0' %> views</p>
 	<% } %>
@@ -9,7 +9,7 @@
 
 <p class="title" contenteditable="true"><%%= post.title %></p>
 <div class="tags" contenteditable="true" spellcheck="false">
-	<%%- post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
+	<%%- post.tags && post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
 </div>
 <p class="content" contenteditable="true">
 	<%%= post.content %>
@@ -18,7 +18,7 @@
 
 <p class="title"><%%= post.title %></p>
 <div class="tags">
-	<%%- post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
+	<%%- post.tags && post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
 </div>
 <p class="content">
 	<%%= post.content %>
