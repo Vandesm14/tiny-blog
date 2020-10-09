@@ -24,11 +24,16 @@ app.get('/', (req, res) => {
 
 app.get('/templates', (req, res) => {
 	let admin = req.cookies.admin === process.env.KEY;
-	let templates = {
-		list: fs.readFileSync(__dirname + `/views/partials/list${admin ? '-admin' : ''}.ejs`).toString(),
-		viewer: fs.readFileSync(__dirname + `/views/partials/viewer${admin ? '-admin' : ''}.ejs`).toString()
-	}
-	res.json(templates);
+	let list, viewer = '';
+	ejs.renderFile(__dirname + `/views/partials/list.ejs`, {admin}, (err, data) => {
+		list = data;
+
+		ejs.renderFile(__dirname + `/views/partials/viewer.ejs`, {admin}, (err, data) => {
+			viewer = data;
+			
+			res.json({list, viewer});
+		});
+	});
 });
 
 app.get('/page/:page', (req, res) => {
