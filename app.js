@@ -16,6 +16,7 @@ firebase.initializeApp(config);
 
 const app = express();
 const db = firebase.database();
+require('./cats.js')(app, db);
 
 let posts = [];
 let started = false;
@@ -23,7 +24,6 @@ db.ref('posts').limitToLast(30).orderByChild('date').on('value', (data) => {
 	posts = data.val() ? Object.values(data.val()) : [];
 	posts = posts.reverse();
 	if (!started) start(0);
-	fs.writeFileSync('db.json', JSON.stringify(data.toJSON()));
 });
 
 function start() {
@@ -59,11 +59,6 @@ app.get('/page/:page', (req, res) => {
 	let page = +req.params.page - 1;
 	// TODO: Retrieve next 20 posts if  page > 3
 	res.json(posts.filter(el => admin || !el.unlist ).slice(page*10, page*10+10));
-});
-
-app.get('/view', (req, res) => {
-	let id = req.query.id;
-	db.ref('posts').child(Object.keys(post.val())[0]).child(type).set(data);
 });
 
 app.get('/login', (req, res) => {
