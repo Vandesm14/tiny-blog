@@ -84,6 +84,7 @@ app.put('/admin/create', (req, res) => {
 	if (!admin) res.status(403).send('Forbidden, not admin');
 	if (!data.date) res.status(400).send('Bad Request, missing date');
 	data.date = new Date(data.date).getTime();
+	data.views = 0;
 	console.log('create', data);
 	db.ref('posts').push(data);
 	res.status(200).send('Success');
