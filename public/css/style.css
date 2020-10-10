@@ -236,9 +236,10 @@ a:visited {
   margin-top: 20px;
   text-align: justify;
   word-wrap: break-word;
-  font-size: 22px;
+	font-size: 22px;
+	padding: 2px;
 }
 
 .viewer > .content > p {
-  margin-bottom: 20px;
+  margin-bottom: 26px;
 }

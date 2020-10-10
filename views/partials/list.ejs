@@ -3,11 +3,11 @@
 		<div class="info">
 			<p class="date"><%%= new Date(post.date).toLocaleString() %></p>
 			<% if (admin) { %>
-			<p class="views"><%%= post.views || '0' %> views</p>
+			<p class="views"><%%= post.views && post.views.toLocaleString() || '0' %> views</p>
 			<% } %>
 		</div>
 		<% if (admin) { %>
-		<p class="title" contenteditable="true"><%%= post.title %></p>
+		<p class="title admin-control" contenteditable="true"><%%= post.title %></p>
 		<% } else { %>
 		<p class="title"><%%= post.title %></p>
 		<% } %>
@@ -15,12 +15,12 @@
 	
 			<% if (admin) { %>
 				
-			<div class="tags" contenteditable="true" spellcheck="false">
+			<div class="tags admin-control" contenteditable="true" spellcheck="false">
 				<%%- post.tags && post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
 			</div>
 			<div class="icons">
-				<img src="assets/delete.png" class="admin-delete">
-				<img src="assets/unlist.png" class="admin-unlist">
+				<img src="assets/delete.png" class="admin-delete admin-control">
+				<img src="assets/unlist.png" class="admin-unlist admin-control">
 				<%%- post.content ? '<img src="assets/content.png">' : '' %>
 			</div>
 	

@@ -1,18 +1,18 @@
 <div class="info">
 	<p class="date"><%%= new Date(post.date).toLocaleString() %></p>
 	<% if (admin) { %>
-	<p class="views"><%%= post.views || '0' %> views</p>
+	<p class="views"><%%= post.views && post.views.toLocaleString() || '0' %> views</p>
 	<% } %>
 </div>
 
 <% if (admin) { %>
 
-<p class="title" contenteditable="true"><%%= post.title %></p>
-<div class="tags" contenteditable="true" spellcheck="false">
+<p class="title admin-control" contenteditable="true"><%%= post.title %></p>
+<div class="tags admin-control" contenteditable="true" spellcheck="false">
 	<%%- post.tags && post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
 </div>
-<div class="content" contenteditable="true">
-	<%%- new showdown.Converter({noHeaderId: true, simplifiedAutoLink: true, tasklists: true}).makeHtml(post.content) %>
+<div class="content admin-control" contenteditable="true">
+	<%%- converter.makeHtml(post.content) %>
 </div>
 <% } else { %>
 

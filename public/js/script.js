@@ -5,6 +5,8 @@ let template = {
 	viewer: ''
 };
 
+let converter = new showdown.Converter({noHeaderId: true, simplifiedAutoLink: true, tasklists: true});
+
 $(document).ready(function () {
 	fetch('/templates')
 		.then(res => res.json())
@@ -36,7 +38,7 @@ $(document).ready(function () {
 });
 
 function renderEntry(index) {
-	$('#viewer').html(ejs.render(template.viewer, {post: posts[index], showdown}));
+	$('#viewer').html(ejs.render(template.viewer, {post: posts[index], converter}));
 }
 
 function renderPage(page) {

@@ -1,34 +1,9 @@
 console.log('Loaded admin.js');
 
 $(document).ready(function () {
-	$(document).on('click', '.post .admin-delete', function () {
-		let index = $(this).closest('.post').index() - 1;
-		if (confirm(`Delete post: "${posts[index].title}"?`)) {
-			$(this).closest('.post').remove();
-			remove(index)
-			.then(() => {
-				console.log('Deleted post: ' + index);
-			})
-			.catch(() => {
-				alert('An error occurred while deleting the post');
-			});
-		} else {
-			$(this).text(posts[index].title);
-		}
-	});
-	$(document).on('click', '.post .admin-unlist', function () {
-		let index = $(this).closest('.post').index() - 1;
-		let action = $(this).closest('.post').hasClass('unlisted') ? 'Relist' : 'Unlist';
-		if (confirm(`${action} post: "${posts[index].title}"?`)) {
-			$(this).closest('.post').toggleClass('unlisted');
-			update('unlist', index, $(this).closest('.post').hasClass('unlisted'))
-			.then(() => {
-				console.log(`${action}ed post: index`);
-			})
-			.catch(() => {
-				alert('An error occurred while unlisting the post');
-			});
-		}
+	// FIXME: Don't trigger view post when admin control is clicked
+	$(document).on('click', '.admin-control', function (e) {
+		e.stopPropagation();
 	});
 
 	$(document).on('keydown', '.title, .tags', function (e) {
@@ -63,12 +38,6 @@ $(document).ready(function () {
 		}
 	});
 
-	$(document).on('keydown', '.content', function (e) {
-		if (e.key === 'Escape') {
-			$(this).blur();
-		}
-	});
-
 	$(document).on('focus', '.tags', function () {
 		let index = getIndex(this);
 		$(this).text(posts[index].tags.join(' '));
@@ -86,6 +55,61 @@ $(document).ready(function () {
 			});
 		}
 		$(this).html(posts[index].tags.map(el => `<a href="#" class="tag">${el}</a>`));
+	});
+
+	$(document).on('click', '.post .admin-delete', function () {
+		let index = $(this).closest('.post').index() - 1;
+		if (confirm(`Delete post: "${posts[index].title}"?`)) {
+			$(this).closest('.post').remove();
+			remove(index)
+			.then(() => {
+				console.log('Deleted post: ' + index);
+			})
+			.catch(() => {
+				alert('An error occurred while deleting the post');
+			});
+		} else {
+			$(this).text(posts[index].title);
+		}
+	});
+	$(document).on('click', '.post .admin-unlist', function () {
+		let index = $(this).closest('.post').index() - 1;
+		let action = $(this).closest('.post').hasClass('unlisted') ? 'Relist' : 'Unlist';
+		if (confirm(`${action} post: "${posts[index].title}"?`)) {
+			$(this).closest('.post').toggleClass('unlisted');
+			update('unlist', index, $(this).closest('.post').hasClass('unlisted'))
+			.then(() => {
+				console.log(`${action}ed post: index`);
+			})
+			.catch(() => {
+				alert('An error occurred while unlisting the post');
+			});
+		}
+	});
+
+	$(document).on('focus', '.content', function () {
+		if ($(this).hasClass('textarea')) return;
+		let index = getIndex(this);
+		$(this).html(posts[index].content.replace(/\n/g, '<br>'));
+	});
+	$(document).on('blur', '.content', function () {
+		let index = getIndex(this);
+		if ($(this).html().replace(/<br>/g, '\n') !== posts[index].content) {
+			posts[index].content = $(this).html().replace(/<br>/g, '\n');
+			update('content', index, posts[index].content)
+			.then(() => {
+				console.log('Updated content for: ' + index);
+			})
+			.catch(() => {
+				alert('An error occurred while editing the post');
+			});
+		}
+		$(this).html(converter.makeHtml(posts[index].content));
+	});
+	$(document).on('keydown', '.content', function (e) {
+		if (e.key === 'Escape') {
+			$(this).blur();
+		}
 	});
 
 	$(document).on('click', '#admin-add', function () {
@@ -112,11 +136,12 @@ $(document).ready(function () {
 		arr.forEach(el => post[el.name] = el.value);
 		post.date = new Date().getTime();
 		post.tags = post.tags.split(' ').filter(el => el);
-		post.unlisted = post.unlisted === 'on' ? true : false;
+		post.unlist = post.unlist === 'on' ? true : false;
+		delete post.unlisted;
 		create(post)
 		.then(() => {
 			$('#admin-form').remove();
-			$('#list').prepend(ejs.render(template.item, {post}));
+			$('#list > .search-box').after(ejs.render(template.item, {post}));
 			posts.unshift(post);
 		})
 		.catch(() => {
@@ -128,15 +153,14 @@ $(document).ready(function () {
 function getIndex(el) {
 	let index = 0;
 	if ($(el).closest('.post').length > 0) {
-		index = $(el).closest('.post').index();
+		index = $(el).closest('.post').index() - 1;
 	} else if ($(el).closest('.viewer').length > 0) {
-		index = $('.list').find('.post.active').index();
+		index = $('.list').find('.post.active').index() - 1;
 	}
 	return index;
 }
 
 async function create(data) {
-	console.log('create', JSON.stringify(data));
 	fetch('/admin/create', {
 		method: 'PUT',
 		headers: {
