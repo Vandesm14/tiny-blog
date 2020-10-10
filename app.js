@@ -16,7 +16,6 @@ firebase.initializeApp(config);
 
 const app = express();
 const db = firebase.database();
-require('./cats.js')(app, db);
 
 let posts = [];
 let started = false;
@@ -31,6 +30,7 @@ function start() {
 		console.log('server started on port: ' + 3000);
 		started = true;
 	});
+	require('./cats.js')(app, db);
 }
 
 app.use(bodyParser.json());
@@ -81,8 +81,14 @@ app.post('/search', (req, res) => {
 app.put('/admin/create', (req, res) => {
 	let admin = req.cookies.admin === process.env.ADMIN;
 	let data = req.body;
-	if (!admin) res.status(403).send('Forbidden, not admin');
-	if (!data.date) res.status(400).send('Bad Request, missing date');
+	if (!admin) {
+		res.status(403).send('Forbidden, not admin');
+		return;
+	}
+	if (!data.date) {
+		res.status(400).send('Bad Request, missing date');
+		return;
+	}
 	data.date = new Date(data.date).getTime();
 	data.views = 0;
 	console.log('create', data);
@@ -92,7 +98,10 @@ app.put('/admin/create', (req, res) => {
 
 app.post('/admin/update', (req, res) => {
 	let admin = req.cookies.admin === process.env.ADMIN;
-	if (!admin) res.status(403).send('Forbidden, not admin');
+	if (!admin) {
+		res.status(403).send('Forbidden, not admin');
+		return;
+	}
 	let type = req.query.type;
 	let id = req.query.id;
 	let data = req.body.data;
@@ -105,7 +114,10 @@ app.post('/admin/update', (req, res) => {
 
 app.delete('/admin/delete', (req, res) => {
 	let admin = req.cookies.admin === process.env.ADMIN;
-	if (!admin) res.status(403).send('Forbidden, not admin');
+	if (!admin) {
+		res.status(403).send('Forbidden, not admin');
+		return;
+	}
 	let id = req.query.id;
 	console.log('delete', id);
 	db.ref('posts').orderByChild('date').equalTo(+id).once('value', (post) => {
