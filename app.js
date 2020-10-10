@@ -36,7 +36,6 @@ function start() {
 		console.log('server started on port: ' + 3000);
 		started = true;
 	});
-	// require('./cats.js')(app, db);
 }
 
 app.use(bodyParser.json());

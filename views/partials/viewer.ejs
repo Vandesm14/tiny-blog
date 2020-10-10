@@ -11,17 +11,17 @@
 <div class="tags" contenteditable="true" spellcheck="false">
 	<%%- post.tags && post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
 </div>
-<p class="content" contenteditable="true">
-	<%%= post.content %>
-</p>
+<div class="content" contenteditable="true">
+	<%%- new showdown.Converter({noHeaderId: true, simplifiedAutoLink: true, tasklists: true}).makeHtml(post.content) %>
+</div>
 <% } else { %>
 
 <p class="title"><%%= post.title %></p>
 <div class="tags">
 	<%%- post.tags && post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
 </div>
-<p class="content">
-	<%%= post.content %>
-</p>
+<div class="content">
+	<%%- new showdown.Converter({noHeaderId: true, simplifiedAutoLink: true, tasklists: true}).makeHtml(post.content) %>
+</div>
 
 <% } %>

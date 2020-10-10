@@ -36,7 +36,7 @@ $(document).ready(function () {
 });
 
 function renderEntry(index) {
-	$('#viewer').html(ejs.render(template.viewer, {post: posts[index]}));
+	$('#viewer').html(ejs.render(template.viewer, {post: posts[index], showdown}));
 }
 
 function renderPage(page) {

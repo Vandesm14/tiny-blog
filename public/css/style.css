@@ -11,7 +11,7 @@ body {
   flex-direction: row;
   background-color: var(--ui-background);
   color: var(--text-blur);
-	font-family: Calibri, sans-serif;
+  font-family: Calibri, sans-serif;
 }
 
 div,
@@ -62,10 +62,10 @@ a:visited {
 
 /* ----------List---------- */
 .list {
-	/*! padding: 4px 0; */
-	/*! padding-left: 6px; */
-	margin: 10px;
-	margin-left: 16px;
+  /*! padding: 4px 0; */
+  /*! padding-left: 6px; */
+  margin: 10px;
+  margin-left: 16px;
 }
 
 .search-box {
@@ -83,10 +83,10 @@ a:visited {
   flex: 1;
   padding: 10px;
   border: none;
+  border-radius: 6px;
   background-color: var(--ui-background);
   color: var(--text-active);
   font-size: 20px;
-  border-radius: 6px;
 }
 #search::placeholder {
   color: var(--text-blur);
@@ -113,6 +113,10 @@ a:visited {
 .post:hover,
 .post.active {
   background-color: var(--ui-active);
+}
+/* FIXME: Fix this */
+.post:first-child {
+  margin-top: 0;
 }
 
 .info,
@@ -179,8 +183,8 @@ a:visited {
 
 /* ----------Viewer---------- */
 .viewer {
+  margin-right: 16px;
   padding: 16px;
-	margin-right: 16px;
 }
 
 .viewer > * {
@@ -233,4 +237,8 @@ a:visited {
   text-align: justify;
   word-wrap: break-word;
   font-size: 22px;
+}
+
+.viewer > .content > p {
+  margin-bottom: 20px;
 }

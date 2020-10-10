@@ -2,7 +2,7 @@ console.log('Loaded admin.js');
 
 $(document).ready(function () {
 	$(document).on('click', '.post .admin-delete', function () {
-		let index = $(this).closest('.post').index();
+		let index = $(this).closest('.post').index() - 1;
 		if (confirm(`Delete post: "${posts[index].title}"?`)) {
 			$(this).closest('.post').remove();
 			remove(index)
@@ -17,7 +17,7 @@ $(document).ready(function () {
 		}
 	});
 	$(document).on('click', '.post .admin-unlist', function () {
-		let index = $(this).closest('.post').index();
+		let index = $(this).closest('.post').index() - 1;
 		let action = $(this).closest('.post').hasClass('unlisted') ? 'Relist' : 'Unlist';
 		if (confirm(`${action} post: "${posts[index].title}"?`)) {
 			$(this).closest('.post').toggleClass('unlisted');
