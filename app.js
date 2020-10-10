@@ -4,6 +4,7 @@ const express = require('express');
 const firebase = require('firebase');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const config = {
@@ -16,6 +17,11 @@ firebase.initializeApp(config);
 
 const app = express();
 const db = firebase.database();
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 1
+});
 
 let posts = [];
 let started = false;
@@ -30,7 +36,7 @@ function start() {
 		console.log('server started on port: ' + 3000);
 		started = true;
 	});
-	require('./cats.js')(app, db);
+	// require('./cats.js')(app, db);
 }
 
 app.use(bodyParser.json());
@@ -63,6 +69,19 @@ app.get('/page/:page', (req, res) => {
 
 app.get('/login', (req, res) => {
 	res.render(__dirname + '/views/login.ejs');
+});
+
+app.get('/view', limiter, (req, res) => {
+	let admin = req.cookies.admin === process.env.ADMIN;
+	if (admin) {
+		res.sendStatus(200);
+		return;
+	}
+	let id = req.query.id;
+	db.ref('posts').orderByChild('date').equalTo(+id).once('value', (post) => {
+		db.ref('posts').child(Object.keys(post.val())[0]).child('views').set(Object.values(post.val())[0].views + 1);
+	});
+	res.sendStatus(200);
 });
 
 app.post('/login', (req, res) => {

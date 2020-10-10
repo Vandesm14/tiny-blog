@@ -18,6 +18,7 @@ $(document).ready(function () {
 		$('.active').removeClass('active');
 		renderEntry($(this).index() - 1);
 		$(this).addClass('active');
+		fetch(`/view?id=${posts[$(this).index() - 1].date}`);
 	});
 });
 
