@@ -102,7 +102,8 @@ $(document).ready(function () {
 		}
 	});
 
-	$(document).on('click', '#form-cancel', function () {
+	$(document).on('click', '#form-cancel', function (e) {
+		if ($(e.target).closest('form').length === -1) return;
 		$('#admin-form').remove();
 	});
 	$(document).on('click', '#form-submit', function () {
