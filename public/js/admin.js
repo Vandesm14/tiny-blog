@@ -137,7 +137,7 @@ $(document).ready(function () {
 		post.date = new Date().getTime();
 		post.tags = post.tags.split(' ').filter(el => el);
 		post.unlist = post.unlist === 'on' ? true : false;
-		delete post.unlisted;
+		poas.views = 0;
 		create(post)
 		.then(() => {
 			$('#admin-form').remove();

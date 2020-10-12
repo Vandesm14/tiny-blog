@@ -1,0 +1,36 @@
+type Query {
+  latest(amount: Int = 10): [Post!]!,
+  oldest(amount: Int = 10): [Post!]!,
+
+  post(date: Date!): Post,
+  after(date: Date!, amount: Int = 10): [Post!]!,
+  before(date: Date!, amount: Int = 10): [Post!]!
+}
+
+type Mutation {
+  new(post: PostInput!): Post!,
+  update(date: Date!, post: PostInput!): Post,
+  remove(date: Date!): Post
+}
+
+scalar Date
+
+type Post {
+  title: String!,
+  content: String!,
+  hasContent: Boolean!,
+
+  tags: [String!]!,
+  unlist: Boolean!, 
+  views: Int!,
+
+  date: Date!
+}
+
+input PostInput {
+  title: String!,
+  content: String!,
+
+  tags: [String!]!,
+  unlist: Boolean!
+}

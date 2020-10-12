@@ -21,7 +21,7 @@
 			<div class="icons">
 				<img src="assets/delete.png" class="admin-delete admin-control">
 				<img src="assets/unlist.png" class="admin-unlist admin-control">
-				<%%- post.content ? '<img src="assets/content.png">' : '' %>
+				<%%- post.hasContent ? '<img src="assets/content.png">' : '' %>
 			</div>
 	
 			<% } else { %>
@@ -30,7 +30,7 @@
 				<%%- post.tags && post.tags.map(el => `<a href="#" class="tag">${el}</a>`).join('\n') %>
 			</div>
 			<div class="icons">
-				<%%- post.content && '<img src="assets/content.png">' %>
+				<%%- post.hasContent && '<img src="assets/content.png">' %>
 			</div>
 	
 			<% } %>
